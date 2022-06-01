@@ -195,7 +195,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action='/products/update' method="POST">
+        <form action='{{ route('products.update', 'test') }}' method="POST">
           @csrf
           @method('put')
           <div class="modal-body">

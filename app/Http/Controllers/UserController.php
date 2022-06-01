@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
-class RoleController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +16,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-      $roles = Role::withCount('permissions')->get();
-      return response()->view('spatie.roles.index', compact('roles'));
+      $users = User::all();
+      // $this->authorize('index', $users);   // Policy
+      return view('users.users', compact('users'));
     }
 
     /**
@@ -25,7 +28,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-      return response()->view('spatie.roles.create');
+      // $this->authorize('create', User::class);  // Policy
+      $roles = Role::all();
+      return view('users.add_user', compact('roles'));
     }
 
     /**
@@ -38,17 +43,23 @@ class RoleController extends Controller
     {
       $input = $request->all();
       $request->validate([
-        'name'       => 'bail|required|string',
-        // 'guard_name' => 'bail|required|string',
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
       ]);
-      $roles = Role::create($input);
+      $input['password'] = Hash::make($request->password);
 
-      if ($roles) {
-        session()->flash('add');
-        return redirect()->route('roles.index');
-      } else {
-        session()->flash('not_add');
-        return redirect()->route('roles.index');
+      // dd($input['role_id']);
+      $user = User::create($input);
+      if($user)
+      {
+        $role = Role::findOrFail($request->role_id);
+        // $role = Role::findOrFail($request->get('role_id'));
+        $user->assignRole($role->name);
+
+        return redirect()->route('users.create');
+      }else{
+        dd("error");
       }
 
     }
@@ -61,7 +72,8 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-      dd('Show Roles');
+      $user = User::first();
+      return view('users.show', compact('user'));
     }
 
     /**
@@ -72,8 +84,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-      $role = Role::findOrFail($id);
-      return view('spatie.roles.edit', compact('role'));
+      $user = User::first();
+      $roles = Role::all();
+      return view('users.edit_user', compact('user', 'roles'));
     }
 
     /**
@@ -85,20 +98,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $role = Role::findOrFail($id);
-      $input = $request->all();
-      $request->validate([
-        // 'guard_name' => 'bail|required|string',
-        'name'       => 'bail|required|string',
-      ]);
-
-      $updateRole = $role->update($input);
-      if ($updateRole) {
-        session()->flash('update');
-        return redirect()->route('roles.index');
-      }else {
-        return redirect()->route('roles.index');
-      }
+      //
     }
 
     /**
@@ -107,17 +107,15 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-      // dd('delete');
-      $role = Role::destroy($id);
-      if ($role) {
-        session()->flash('delete');
-        return redirect()->route('roles.index');
+      $input = $request->all();
+      $user = User::findOrFail($input['user_id']);
+      $user->delete();
+      if($user){
+        return redirect()->route('users.index');
       }else {
-        return redirect()->route('roles.index');
+        dd('Error');
       }
     }
-
-
 }

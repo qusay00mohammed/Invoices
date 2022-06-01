@@ -47,26 +47,25 @@
         <div class="card-body">
           <div class="main-content-label mg-b-5">
             <div class="col-xs-7 col-sm-7 col-md-7">
-                <div class="form-group">
-                    <label>المسمى الوظيفي الجديد</label>
+                {{-- <div class="form-group">
+                    <label>Guard Name</label>
                     <select name="guard_name" required class="form-control">
                       <option value="super_admin">Super Admin</option>
                       <option value="admin">Admin</option>
                       <option value="user">user</option>
                     </select>
-                </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-lg-4">
-              <label for="">اسم المستخدم</label>
-              <input type="text" class="form-control" name="name" placeholder="ادخل اسم الصلاحية" required>
-            </div>
+                </div> --}}
 
 
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                <div class="form-group">
+                  <label for="">اضافة مسمى وظيفي جديد</label>
+                  <input type="text" class="form-control" name="name" placeholder="ادخل مسمى وظيفي جديد" required>
+              </div>
+
+              <div class="form-group">
                 <button type="submit" class="btn btn-main-primary">تاكيد</button>
+              </div>
+
             </div>
           </div>
         </div>

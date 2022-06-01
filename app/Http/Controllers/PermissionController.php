@@ -39,16 +39,16 @@ class PermissionController extends Controller
     $input = $request->all();
       $request->validate([
         'name'       => 'bail|required|string',
-        'guard_name' => 'bail|required|string',
+        // 'guard_name' => 'bail|required|string',
       ]);
       $permission = Permission::create($input);
 
       if ($permission) {
         session()->flash('add');
-        return redirect()->route('permissions.index');
+        return redirect()->route('permissions.create');
       } else {
         session()->flash('not_add');
-        return redirect()->route('permissions.index');
+        return redirect()->route('permissions.create');
       }
 
   }
@@ -61,7 +61,7 @@ class PermissionController extends Controller
    */
   public function show($id)
   {
-    dd('qweqwe');
+    dd('Show Permissions');
   }
 
   /**
@@ -89,7 +89,7 @@ class PermissionController extends Controller
     $input = $request->all();
       $request->validate([
         'name'       => 'bail|required|string',
-        'guard_name' => 'bail|required|string',
+        // 'guard_name' => 'bail|required|string',
       ]);
 
       $updatePermission = $permission->update($input);

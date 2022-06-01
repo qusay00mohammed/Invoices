@@ -1,20 +1,20 @@
 @extends('layouts.master')
 @section('css')
-<!--Internal   Notify -->
-<link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+<!--Internal  Font Awesome -->
+<link href="{{URL::asset('assets/plugins/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
+<!--Internal  treeview -->
+<link href="{{URL::asset('assets/plugins/treeview/treeview-rtl.css')}}" rel="stylesheet" type="text/css" />
 @section('title')
-صلاحيات المستخدمين - مورا سوفت للادارة القانونية
+تعديل الصلاحيات - مورا سوفت للادارة القانونية
 @stop
-
-
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 <div class="breadcrumb-header justify-content-between">
     <div class="my-auto">
         <div class="d-flex">
-            <h4 class="content-title mb-0 my-auto">المستخدمين</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0"> /
-                صلاحيات المستخدمين</span>
+            <h4 class="content-title mb-0 my-auto">الصلاحيات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ تعديل
+                الصلاحيات</span>
         </div>
     </div>
 </div>
@@ -22,121 +22,68 @@
 @endsection
 @section('content')
 
-
-@if (session()->has('add'))
-<script>
-    window.onload = function() {
-        notif({
-            msg: " تم اضافة الصلاحية بنجاح"
-            , type: "success"
-        });
-    }
-</script>
+@if (count($errors) > 0)
+<div class="alert alert-danger">
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>خطا</strong>
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 
-@if (session()->has('not_add'))
-<script>
-    window.onload = function() {
-        notif({
-            msg: "فشلت عملية الاضافة"
-            , type: "success"
-        });
-    }
 
-</script>
-@endif
-
-@if (session()->has('edit'))
-<script>
-    window.onload = function() {
-        notif({
-            msg: " تم تحديث بيانات الصلاحية بنجاح"
-            , type: "success"
-        });
-    }
-
-</script>
-@endif
-
-@if (session()->has('delete'))
-<script>
-    window.onload = function() {
-        notif({
-            msg: " تم حذف الصلاحية بنجاح"
-            , type: "error"
-        });
-    }
-
-</script>
-@endif
-
-@if (session()->has('update'))
-<script>
-    window.onload = function() {
-        notif({
-            msg: " تم تحديث الصلاحية بنجاح"
-            , type: "success"
-        });
-    }
-
-</script>
-@endif
+{!! Form::model($role, ['method' => 'PATCH','route' => ['roles.permissions.update', $role->id]]) !!}
 <!-- row -->
-<div class="row row-sm">
-    <div class="col-xl-12">
-        <div class="card">
-            <div class="card-header pb-0">
-                <div class="d-flex justify-content-between">
-                    <div class="col-lg-12 margin-tb">
-                        <div class="pull-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('roles.create') }}">اضافة</a>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mg-b-20">
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table mg-b-0 text-md-nowrap table-hover ">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الاسم</th>
-                                <th>اسم الصلاحية</th>
-                                <th>العمليات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($roles as $key => $role)
-                            <tr>
-                                <td>{{ ++$key }}</td>
-                                <td>{{ $role->name }}</td>
-                                <td>{{ $role->guard_name }}</td>
-                                <td>
-                                    <a class="btn btn-success btn-sm" href="{{ route('roles.show', $role->id) }}">عرض</a>
+                <div class="main-content-label mg-b-5">
+                    <div class="form-group">
+                        <p>اسم الصلاحية :</p>
+                        {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- col -->
+                    <div class="col-lg-4">
+                        <ul id="treeview1">
+                            <li><a href="#">الصلاحيات</a>
+                                <ul>
+                                    <li>
+                                        @foreach($permission as $value)
+                                        <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                                            {{ $value->name }}</label>
+                                        <br>
+                                        @endforeach
+                                    </li>
 
-                                    <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', [$role->id]) }}">تعديل</a>
-
-                                    <a class="btn btn-danger btn-sm" href="{{ route('roles.delete', [$role->id]) }}">حذف</a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                        <button type="submit" class="btn btn-main-primary">تحديث</button>
+                    </div>
+                    <!-- /col -->
                 </div>
             </div>
         </div>
     </div>
-    <!--/div-->
 </div>
 <!-- row closed -->
 </div>
 <!-- Container closed -->
 </div>
 <!-- main-content closed -->
+{!! Form::close() !!}
 @endsection
 @section('js')
-<!--Internal  Notify js -->
-<script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
-<script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
+<!-- Internal Treeview js -->
+<script src="{{URL::asset('assets/plugins/treeview/treeview.js')}}"></script>
 @endsection

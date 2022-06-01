@@ -101,8 +101,8 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>الاسم</th>
                 <th>اسم الصلاحية</th>
+                <th>Guard Name</th>
                 <th>العمليات</th>
               </tr>
             </thead>
@@ -113,7 +113,7 @@
                 <td>{{ $permission->name }}</td>
                 <td>{{ $permission->guard_name }}</td>
                 <td>
-                  <a class="btn btn-success btn-sm" href="{{ route('permissions.show', $permission->id) }}">عرض</a>
+                  {{-- <a class="btn btn-success btn-sm" href="{{ route('permissions.show', $permission->id) }}">عرض</a> --}}
 
                   <a class="btn btn-primary btn-sm" href="{{ route('permissions.edit', [$permission->id]) }}">تعديل</a>
 

@@ -68,7 +68,14 @@ Route::post('addFile', 'InvoiceAttachmentController@store')->name('addFile');
 
 Route::post('delete_file', 'InvoiceAttachmentController@destroy')->name('delete_file');
 
+// Route user
+Route::resource('users', 'UserController');
 
+// End route user
+
+
+
+// Route Permissions And Roles
 Route::middleware('auth')->group(function () {
   Route::get('roles/{id}/delete', 'RoleController@destroy')->name('roles.delete');
   Route::resource('roles', 'RoleController');
@@ -76,8 +83,13 @@ Route::middleware('auth')->group(function () {
   Route::get('permission/{id}/delete', 'PermissionController@destroy')->name('permissions.delete');
   Route::resource('permissions', 'PermissionController');
 
-  Route::resource('roles-permissions', 'RolePermissionController');
+  Route::patch('roles/{id}/permissions', 'RolePermissionController@update')->name('roles.permissions.update');
+  Route::get('permissions/{id}/role', 'RolePermissionController@index')->name('roles.permissions.index');
+
+  // Route::resource('roles.permissions', 'RolePermissionController');
 });
+// End Route Permissions and Roles
+
 
 Route::get('invoices_report', 'InvoiceReportController@index')->name('invoices_report');
 Route::post('search_invoices', 'InvoiceReportController@search_invoices')->name('search_invoices');
@@ -85,5 +97,10 @@ Route::post('search_invoices', 'InvoiceReportController@search_invoices')->name(
 
 Route::get('customer_report', 'CustomerReportController@index')->name('customers_report');
 Route::post('search_customers', 'CustomerReportController@search_customers')->name('search_customers');
+
+
+// Send email
+Route::get('send-mail', 'SendEmailController@index')->name('send-mail');
+
 
 Route::get('/{page}', 'AdminController@index');

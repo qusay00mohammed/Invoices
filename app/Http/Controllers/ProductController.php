@@ -15,6 +15,7 @@ class ProductController extends Controller
    */
   public function index()
   {
+    $this->authorize('المنتجات', Product::class); // Policy
     $sections = Section::all();
     $products = Product::all();
     return view('products.products', compact('sections', 'products'));
@@ -27,7 +28,7 @@ class ProductController extends Controller
    */
   public function create()
   {
-    //
+    $this->authorize('اضافة منتج', Product::class);
   }
 
   /**
@@ -38,8 +39,8 @@ class ProductController extends Controller
    */
   public function store(Request $request)
   {
+    $this->authorize('تخزين منتج', Product::class);
     $input = $request->all();
-    // dd($input);
     $request->validate([
       'product_name' => 'required',
       'section_id'   => 'required',
@@ -59,7 +60,7 @@ class ProductController extends Controller
    */
   public function show(Product $product)
   {
-    //
+    // $this->authorize('show', Product::class);
   }
 
   /**
@@ -70,7 +71,7 @@ class ProductController extends Controller
    */
   public function edit(Product $product)
   {
-    //
+    $this->authorize('تعديل منتج', Product::class);
   }
 
   /**
@@ -82,8 +83,7 @@ class ProductController extends Controller
    */
   public function update(Request $request)
   {
-    // dd($request->all());
-
+    $this->authorize('تحديث منتج', Product::class);
     $input = $request->all();
     $input['section_id'] = Section::where('section_name', $request->section_id)->first()->id;
     $product = Product::findOrFail($request->id);
@@ -106,7 +106,7 @@ class ProductController extends Controller
    */
   public function destroy(Request $request)
   {
-    // dd('qusay');
+    $this->authorize('حذف منتج', Product::class);
     $product = Product::findOrFail($request->id);
     $product->delete();
 

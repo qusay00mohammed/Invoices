@@ -47,25 +47,25 @@
         <div class="card-body">
           <div class="main-content-label mg-b-5">
             <div class="col-xs-7 col-sm-7 col-md-7">
-                <div class="form-group">
-                    <label>اسم الصلاحية :</label>
+                {{-- <div class="form-group">
+                    <label>GUARD NAME</label>
                     <select name="guard_name" required class="form-control">
                       <option {{ $permission->guard_name == 'super_admin' ? 'selected' : '' }} value="super_admin">Super Admin</option>
                     </select>
+                </div> --}}
+
+                <div class="form-group">
+                  <label for="">الاسم</label>
+                  <input type="text" value="{{ $permission->name }}" class="form-control" name="name" placeholder="ادخل اسم الصلاحية" required>
                 </div>
+
+                <div class="form-group">
+                  <button type="submit" class="btn btn-main-primary">تحديث</button>
+                </div>
+
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-lg-4">
-              <label for="">الاسم</label>
-              <input type="text" value="{{ $permission->name }}" class="form-control" name="name" placeholder="ادخل اسم الصلاحية" required>
-            </div>
-
-
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" class="btn btn-main-primary">تحديث</button>
-            </div>
           </div>
         </div>
     </div>

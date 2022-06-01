@@ -16,7 +16,7 @@ class SectionController extends Controller
    */
   public function index()
   {
-    // dd('qusay');
+    $this->authorize('الاقسام', Section::class);
     $section = Section::all();
     return view('sections.section', compact('section'));
   }
@@ -28,7 +28,7 @@ class SectionController extends Controller
    */
   public function create()
   {
-    //
+    $this->authorize('اضافة قسم', Section::class);
   }
 
   /**
@@ -39,6 +39,7 @@ class SectionController extends Controller
    */
   public function store(Request $request)
   {
+    $this->authorize('تخزين قسم', Section::class);
     // $exist = Section::where('section_name', '=', $input['section_name'])->exists();
     $input = $request->all();
     $request->validate([
@@ -72,7 +73,7 @@ class SectionController extends Controller
    */
   public function edit(Section $section)
   {
-    //
+    $this->authorize('تعديل قسم', Section::class);
   }
 
   /**
@@ -84,6 +85,7 @@ class SectionController extends Controller
    */
   public function update(Request $request)
   {
+    $this->authorize('تحديث قسم', Section::class);
     // dd($request->all());
     $id = $request->id;
     $input = $request->all();
@@ -109,6 +111,7 @@ class SectionController extends Controller
    */
   public function destroy(Request $request)
   {
+    $this->authorize('حذف قسم', Section::class);
     $id = $request->id;
     $section = Section::findOrFail($id)->delete();
 

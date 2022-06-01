@@ -14,8 +14,7 @@
 <div class="breadcrumb-header justify-content-between">
     <div class="my-auto">
         <div class="d-flex">
-            <h4 class="content-title mb-0 my-auto">الصلاحيات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ اضافة
-                نوع مستخدم</span>
+            <h4 class="content-title mb-0 my-auto">الصلاحيات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ اضافة صلاحية</span>
         </div>
     </div>
 </div>
@@ -48,26 +47,25 @@
         <div class="card-body">
           <div class="main-content-label mg-b-5">
             <div class="col-xs-7 col-sm-7 col-md-7">
+                {{-- <div class="form-group"> --}}
+                    {{-- <label>GUARD NAME</label> --}}
+                    {{-- <select name="guard_name" required class="form-control"> --}}
+                      {{-- <option value="we">web</option> --}}
+                      {{-- <option value="admin">Admin</option> --}}
+                    {{-- </select> --}}
+                {{-- </div> --}}
+
                 <div class="form-group">
-                    <label>اسم الصلاحية :</label>
-                    <select name="guard_name" required class="form-control">
-                      <option value="super_admin">Super Admin</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                </div>
+                  <label for="">الاسم</label>
+                  <input type="text" class="form-control" name="name" placeholder="ادخل اسم الصلاحية" required>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-main-primary">تاكيد</button>
+              </div>
+
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-lg-4">
-              <label for="">الاسم</label>
-              <input type="text" class="form-control" name="name" placeholder="ادخل اسم الصلاحية" required>
-            </div>
-
-
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <button type="submit" class="btn btn-main-primary">تاكيد</button>
-            </div>
           </div>
         </div>
     </div>
