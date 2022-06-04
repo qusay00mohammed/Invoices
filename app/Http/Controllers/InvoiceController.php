@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Invoice;
-use App\InvoiceDetails;
-use App\Section;
-use App\InvoiceAttachment;
-use App\Notifications\AddInvoice;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Auth;
-use App\Exports\InvoiceExport;
+use App\Invoice;
+use App\Section;
+use App\InvoiceDetails;
+use App\InvoiceAttachment;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
-use Illuminate\Support\Facades\Notification;
+use App\Exports\InvoiceExport;
+use App\Notifications\AddInvoice;
+use App\Notifications\InvoiceAdd;
+use Illuminate\Support\Facades\DB;
+// use Illuminate\Foundation\Auth\User;
+use App\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 
 class InvoiceController extends Controller
 {
@@ -145,13 +148,29 @@ class InvoiceController extends Controller
       $request->pic->move(public_path('Attachments/' . $invoice_number), $imageName);
     }
 
-
-    $user = Auth::user();
+    // send Email Notifications
+    // $user = Auth::user();
+    $user = User::get(); // => برسل اشعار لكل المستخدمين
     // $user->notyfy(new AddInvoice($invoice_id));
-    Notification::send($user, new AddInvoice($invoice_id));
+    // Notification::send($user, new AddInvoice($invoice_id)); // في مشكلة في حسابك ما في مشاكل في الكود
+
+
+    // send database Notifications
+    // $invoice = Invoice::latest()->first();
+    Notification::send($user, new InvoiceAdd($invoice_id));
+
 
     session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
     return back();
+  }
+
+  public function readAsNotifications()
+  {
+    $userUnReadNotifications = auth::user()->unreadNotifications;
+    if($userUnReadNotifications){
+      $userUnReadNotifications->markAsRead();
+      return redirect()->back();
+    }
   }
 
   /**

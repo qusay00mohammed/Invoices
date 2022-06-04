@@ -21,13 +21,15 @@ Route::get('/', function () {
 
 
 
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true, 'register' => false]);
 
 // Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('invoices', 'InvoiceController');
+
+Route::get('markAsNotifications', 'InvoiceController@readAsNotifications')->name('readAsNotifications');
 
 
 Route::get('paid_invoices', 'InvoiceController@paid_invoices')->name('paid_invoices');

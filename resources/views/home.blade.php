@@ -15,8 +15,8 @@
 <div class="breadcrumb-header justify-content-between">
   <div class="left-content">
     <div>
-      <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Hi, welcome back!</h2>
-      <p class="mg-b-0">Sales monitoring dashboard template.</p>
+      <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">مرحبًا بكم مرة أخرى!</h2>
+      <p class="mg-b-0">لوحة مراقبة الفواتير والمبيعات.</p>
     </div>
   </div>
   <div class="main-dashboard-header-right">
@@ -70,8 +70,12 @@
                 @php
                 $allInvoices = App\Invoice::count();
                 $unpaidBills = App\Invoice::where('value_status', 2)->count();
-                $echo = $unpaidBills / $allInvoices * 100 . "%";
-                echo round($echo) . "%";
+                if ($allInvoices == 0) {
+                  echo 0;
+                }else {
+                  $echo = $unpaidBills / $allInvoices * 100 . "%";
+                  echo round($echo) . "%";
+                }
                 @endphp
               </span>
             </span>
@@ -101,8 +105,12 @@
                 @php
                 $allInvoices = App\Invoice::count();
                 $paidBills = App\Invoice::where('value_status', 1)->count();
-                $echo = $paidBills / $allInvoices * 100 . "%";
-                echo round($echo) . "%";
+                if($allInvoices == 0) {
+                  echo 0;
+                }else{
+                  $echo = $paidBills / $allInvoices * 100 . "%";
+                  echo round($echo) . "%";
+                }
                 @endphp
               </span>
             </span>
@@ -132,8 +140,12 @@
                 @php
                 $allInvoices = App\Invoice::count();
                 $partiallyInvoices = App\Invoice::where('value_status', 3)->count();
-                $echo = $partiallyInvoices / $allInvoices * 100 . "%";
-                echo round($echo) . "%";
+                if($allInvoices == 0){
+                  echo 0;
+                }else {
+                  $echo = $partiallyInvoices / $allInvoices * 100 . "%";
+                  echo round($echo) . "%";
+                }
                 @endphp
               </span>
             </span>
@@ -152,13 +164,12 @@
     <div class="card">
       <div class="card-header bg-transparent pd-b-0 pd-t-20 bd-b-0">
         <div class="d-flex justify-content-between">
-          <h4 class="card-title mb-0">Order status</h4>
-          <i class="mdi mdi-dots-horizontal text-gray"></i>
+          <h4 class="card-title mb-0">نسبة توزيع الفواتير</h4>
+          {{-- <i class="mdi mdi-dots-horizontal text-gray"></i> --}}
         </div>
-        <p class="tx-12 text-muted mb-0">Order Status and Tracking. Track your order from ship date to arrival. To
-          begin, enter your order number.</p>
+        <p class="tx-12 text-muted mb-0"></p>
       </div>
-      <div class="card-body" style="height: 293px">
+      <div class="card-body">
         <div style="width:75%;">
           {!! $chartjs->render() !!}
         </div>
@@ -167,14 +178,14 @@
   </div>
   <div class="col-lg-12 col-xl-5">
     <div class="card card-dashboard-map-one">
-      <label class="main-content-label">Sales Revenue by Customers in USA</label>
-      <span class="d-block mg-b-20 text-muted tx-12">Sales Performance of all states in the United States</span>
+      <label class="main-content-label">ملخص نسبة الفواتير</label>
+      <span class="d-block mg-b-20 text-muted tx-12"></span>
 
-      <div class="" style="height: 250px">
+      {{-- <div class=""> --}}
         <div style="width:75%;">
           {!! $chartjs_2->render() !!}
         </div>
-      </div>
+      {{-- </div> --}}
     </div>
   </div>
 </div>

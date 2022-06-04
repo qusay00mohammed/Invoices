@@ -22,35 +22,10 @@ class HomeController extends Controller
    *
    * @return \Illuminate\Contracts\Support\Renderable
    */
-  // public function index()
-  // {
-  //   $chartjs = app()->chartjs
-  //     ->name('barChartTest')
-  //     ->type('bar')
-  //     ->size(['width' => 400, 'height' => 200])
-  //     ->labels(['الفواتير الغير مدفوعة', 'الفواتير المدفوعة'])
-  //     ->datasets([
-  //       [
-  //         "label" => "نسبة الفواتير الغير مدفوعة",
-  //         'backgroundColor' => ['blue'],
-  //         'data' => [69, 70]
-  //       ],
-  //       // [
-  //       //   "label" => "نسبة الفواتير المدفوعة",
-  //       //   'backgroundColor' => ['rgba(255, 99, 132, 0.3)'],
-  //       //   'data' => [65]
-  //       // ]
-  //     ])
-  //     ->options([]);
-
-  //   return view('home', compact('chartjs'));
-  // }
-
 
   public function index()
   {
     //=================احصائية نسبة تنفيذ الحالات======================
-
 
 
     $count_all = Invoice::count();
@@ -58,48 +33,37 @@ class HomeController extends Controller
     $count_invoices2 = Invoice::where('value_status', 2)->count();
     $count_invoices3 = Invoice::where('value_status', 3)->count();
 
-    if ($count_invoices2 == 0) {
-      $nspainvoices2 = 0;
-    } else {
-      $nspainvoices2 = $count_invoices2 / $count_all * 100;
+    if($count_all == 0) {
+      $invoice1 = 0;
+      $invoice2 = 0;
+      $invoice3 = 0;
+    }else {
+      $invoice1 = $count_invoices1 / $count_all * 100;
+      $invoice2 = $count_invoices2 / $count_all * 100;
+      $invoice3 = $count_invoices3 / $count_all * 100;
     }
-
-    if ($count_invoices1 == 0) {
-      $nspainvoices1 = 0;
-    } else {
-      $nspainvoices1 = $count_invoices1 / $count_all * 100;
-    }
-
-    if ($count_invoices3 == 0) {
-      $nspainvoices3 = 0;
-    } else {
-      $nspainvoices3 = $count_invoices3 / $count_all * 100;
-    }
-
 
     $chartjs = app()->chartjs
       ->name('barChartTest')
       ->type('bar')
-      ->size(['width' => 350, 'height' => 200])
-      ->labels(['الفواتير الغير المدفوعة', 'الفواتير المدفوعة', 'الفواتير المدفوعة جزئيا'])
+      ->size(['width' => 250, 'height' => 141])
+      ->labels(['الفواتير المدفوعة', 'الفواتير الغير المدفوعة', 'الفواتير المدفوعة جزئيا'])
       ->datasets([
-        [
-          "label" => "الفواتير الغير المدفوعة",
-          'backgroundColor' => ['#ec5858'],
-          'data' => [$nspainvoices2]
-        ],
         [
           "label" => "الفواتير المدفوعة",
           'backgroundColor' => ['#81b214'],
-          'data' => [$nspainvoices1]
+          'data' => [$invoice1],
+        ],
+        [
+          "label" => "الفواتير الغير المدفوعة",
+          'backgroundColor' => ['#ec5858'],
+          'data' => [$invoice2],
         ],
         [
           "label" => "الفواتير المدفوعة جزئيا",
           'backgroundColor' => ['#ff9642'],
-          'data' => [$nspainvoices3]
+          'data' => [$invoice3],
         ],
-
-
       ])
       ->options([]);
 
@@ -107,12 +71,12 @@ class HomeController extends Controller
     $chartjs_2 = app()->chartjs
       ->name('pieChartTest')
       ->type('pie')
-      ->size(['width' => 340, 'height' => 200])
-      ->labels(['الفواتير الغير المدفوعة', 'الفواتير المدفوعة', 'الفواتير المدفوعة جزئيا'])
+      ->size(['width' => 250, 'height' => 200])
+      ->labels(['الفواتير المدفوعة', 'الفواتير الغير المدفوعة', 'الفواتير المدفوعة جزئيا'])
       ->datasets([
         [
-          'backgroundColor' => ['#ec5858', '#81b214', '#ff9642'],
-          'data' => [$nspainvoices2, $nspainvoices1, $nspainvoices3]
+          'backgroundColor' => ['#81b214', '#ec5858', '#ff9642'],
+          'data' => [$invoice1, $invoice2, $invoice3]
         ]
       ])
       ->options([]);
