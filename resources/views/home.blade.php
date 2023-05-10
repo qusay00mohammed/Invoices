@@ -73,7 +73,7 @@
                 if ($allInvoices == 0) {
                   echo 0;
                 }else {
-                  $echo = $unpaidBills / $allInvoices * 100 . "%";
+                  $echo = $unpaidBills / $allInvoices * 100;
                   echo round($echo) . "%";
                 }
                 @endphp
@@ -108,7 +108,7 @@
                 if($allInvoices == 0) {
                   echo 0;
                 }else{
-                  $echo = $paidBills / $allInvoices * 100 . "%";
+                  $echo = $paidBills / $allInvoices * 100;
                   echo round($echo) . "%";
                 }
                 @endphp
@@ -143,7 +143,7 @@
                 if($allInvoices == 0){
                   echo 0;
                 }else {
-                  $echo = $partiallyInvoices / $allInvoices * 100 . "%";
+                  $echo = $partiallyInvoices / $allInvoices * 100;
                   echo round($echo) . "%";
                 }
                 @endphp
